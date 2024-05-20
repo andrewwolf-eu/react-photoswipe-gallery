@@ -2,15 +2,57 @@
 
 [![codecov](https://codecov.io/gh/dromru/react-photoswipe-gallery/branch/master/graph/badge.svg)](https://codecov.io/gh/dromru/react-photoswipe-gallery) [![npm](https://img.shields.io/npm/v/react-photoswipe-gallery.svg)](https://www.npmjs.com/package/react-photoswipe-gallery)
 
+> Pagination enabled version
+
+## Basic Usage with pagination
+
+```javascript
+import 'photoswipe/dist/photoswipe.css'
+
+import { Gallery, Item } from '@andrew-wolf/react-photoswipe-gallery'
+
+const MyGallery = () => (
+  <Gallery
+    pagination={{
+      items: pictureUrlListArray,
+      pageSize: 100,
+      displayItem: (
+        paginatedItems: string[],
+        // pageNumber: number,
+        // pageSize: number,
+      ) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-10 gap-2 pswp-gallery">
+          {paginatedItems.map(
+            (url) => {
+              <Item
+                original={url}
+                thumbnail={url}
+                width="1024"
+                height="768"
+              >
+                {({ ref, open }) => (
+                  <img ref={ref} onClick={open} src={url} />
+                )}
+              </Item>
+            },
+          )}
+        </div>
+      ),
+    }}>
+  </Gallery>
+)
+```
+
+
 > A configurable and flexible React component wrapper around [PhotoSwipe](https://photoswipe.com/).
-> ℹ️ **If you are using PhotoSwipe v4, Use [v1](https://github.com/dromru/react-photoswipe-gallery/tree/v1.3.10) instead**
+> ℹ️ **If you are using PhotoSwipe v4, Use [v1](https://github.com/andrewwolf-eu/react-photoswipe-gallery/tree/v1.3.10) instead**
 
 ## Basic Usage
 
 ```javascript
 import 'photoswipe/dist/photoswipe.css'
 
-import { Gallery, Item } from 'react-photoswipe-gallery'
+import { Gallery, Item } from '@andrew-wolf/react-photoswipe-gallery'
 
 const MyGallery = () => (
   <Gallery>
@@ -42,7 +84,7 @@ const MyGallery = () => (
 
 Check out the [Storybook](https://dromru.github.io/react-photoswipe-gallery/) to see it in action 🚀
 
-Stories are written as real-world examples, so you can see them at the bottom of Storybook UI in the Story tab. Or browse the [source code](https://github.com/dromru/react-photoswipe-gallery/tree/master/src/storybook) on GitHub. It covers most of the use-cases and provides examples for configuration options.
+Stories are written as real-world examples, so you can see them at the bottom of Storybook UI in the Story tab. Or browse the [source code](https://github.com/andrewwolf-eu/react-photoswipe-gallery/tree/master/src/storybook) on GitHub. It covers most of the use-cases and provides examples for configuration options.
 
 ## Installation
 
@@ -77,7 +119,7 @@ const MyGallery = () => (
 )
 ```
 
-[Example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/hash-navigation.stories.tsx)
+[Example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/hash-navigation.stories.tsx)
 
 ## Captions
 
@@ -99,7 +141,7 @@ const MyGallery = () => (
 )
 ```
 
-[Example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/with-caption.stories.tsx)
+[Example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/with-caption.stories.tsx)
 
 ## Plugins
 
@@ -128,7 +170,7 @@ const MyGallery = () => (
 )
 ```
 
-[Example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/plugins.stories.tsx)
+[Example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/plugins.stories.tsx)
 
 ## Custom UI Elements
 
@@ -168,7 +210,7 @@ const MyGallery = () => (
 )
 ```
 
-[Example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/rotate-slide-button.stories.tsx)
+[Example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/rotate-slide-button.stories.tsx)
 
 ## Custom slide content
 
@@ -189,7 +231,7 @@ const MyGallery = () => (
 )
 ```
 
-[Example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/custom-content.stories.tsx)
+[Example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/custom-content.stories.tsx)
 
 ## Access to Photoswipe instance
 
@@ -258,12 +300,12 @@ const MyGallery = () => (
 | - | - | - | - |
 | `id` | Number or String | ✓ (for hash navigation) | Item ID, for [hash navigation](#hash-navigation) |
 | `options` | Object | | Object containing PhotoSwipe [options](https://photoswipe.com/options/) and [styling](https://photoswipe.com/styling/) properties |
-| `plugins` | Function | | Function for registering PhotoSwipe [plugins](#plugins). You should pass `photoswipeLightbox` to each plugin constructor ([example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/plugins.stories.tsx)) |
-| `uiElements` | Array | | Array of configuration objects for [custom UI elements](#custom-ui-elements). Use it for [adding custom UI elements](https://photoswipe.com/adding-ui-elements/) ([example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/rotate-slide-button.stories.tsx)) |
+| `plugins` | Function | | Function for registering PhotoSwipe [plugins](#plugins). You should pass `photoswipeLightbox` to each plugin constructor ([example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/plugins.stories.tsx)) |
+| `uiElements` | Array | | Array of configuration objects for [custom UI elements](#custom-ui-elements). Use it for [adding custom UI elements](https://photoswipe.com/adding-ui-elements/) ([example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/rotate-slide-button.stories.tsx)) |
 | `onBeforeOpen` | Function | | Triggers before `PhotoSwipe.init()` call. Use it for accessing PhotoSwipe [API](https://photoswipe.com/methods/#photoswipe-core-methods). It will receive PhotoSwipe instance as the first argument: `(photoswipe: PhotoSwipe) => void` |
 | `onOpen` | Function | | Triggers after `PhotoSwipe.init()` call. Use it for accessing PhotoSwipe [API](https://photoswipe.com/methods/#photoswipe-core-methods). It will receive PhotoSwipe instance as the first argument: `(photoswipe: PhotoSwipe) => void` |
-| `withCaption` | Boolean | ✓ (for default captions) | Enables built-in [caption](#captions) display. Use the `caption` prop of the Item component to control caption text ([example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/with-default-caption.stories.tsx)) |
-| `withDownloadButton` | Boolean | ✓ (for download button) | Adds UI control for downloading the original image of the current slide ([example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/with-download-button.stories.tsx)) |
+| `withCaption` | Boolean | ✓ (for default captions) | Enables built-in [caption](#captions) display. Use the `caption` prop of the Item component to control caption text ([example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/with-default-caption.stories.tsx)) |
+| `withDownloadButton` | Boolean | ✓ (for download button) | Adds UI control for downloading the original image of the current slide ([example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/with-download-button.stories.tsx)) |
 
 ### Item
 
@@ -275,16 +317,16 @@ const MyGallery = () => (
 | - | - | - | - |
 | `children` | Function | ✓ | Render prop for exposing `Gallery` API |
 | `original` | String |  | Url of original image |
-| `originalSrcset` | String |  | Srcset of original image ([example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/srcset.stories.tsx)) |
+| `originalSrcset` | String |  | Srcset of original image ([example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/srcset.stories.tsx)) |
 | `thumbnail` | String |  | Url of thumbnail |
 | `width` | Number or String |  | Width of original image |
 | `height` | Number or String |  | Height of original image |
 | `alt` | String |  | Alternate text for original image |
-| `caption` | String |  | Text or html for caption ([example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/with-default-caption.stories.tsx)) |
-| `cropped` | Boolean |  | Thumbnail is cropped ([example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/cropped.stories.tsx)) |
-| `content` | ReactElement |  | [Custom slide content](#custom-slide-content) ([example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/custom-content.stories.tsx)) |
-| `html` | String |  | [Custom slide content](#custom-slide-content) (raw html) ([example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/custom-content.stories.tsx)) |
-| `id` | Number or String |  | Item ID, for [hash navigation](#hash-navigation) ([example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/hash-navigation.stories.tsx)) |
+| `caption` | String |  | Text or html for caption ([example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/with-default-caption.stories.tsx)) |
+| `cropped` | Boolean |  | Thumbnail is cropped ([example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/cropped.stories.tsx)) |
+| `content` | ReactElement |  | [Custom slide content](#custom-slide-content) ([example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/custom-content.stories.tsx)) |
+| `html` | String |  | [Custom slide content](#custom-slide-content) (raw html) ([example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/custom-content.stories.tsx)) |
+| `id` | Number or String |  | Item ID, for [hash navigation](#hash-navigation) ([example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/hash-navigation.stories.tsx)) |
 
 #### Note about Item's `children` render prop
 
@@ -375,7 +417,7 @@ const MyGallery = () => {
 }
 ```
 
-[Example](https://github.com/dromru/react-photoswipe-gallery/blob/master/src/storybook/playground.stories.tsx)
+[Example](https://github.com/andrewwolf-eu/react-photoswipe-gallery/blob/master/src/storybook/playground.stories.tsx)
 
 ## Requirements
 

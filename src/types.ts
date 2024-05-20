@@ -4,6 +4,16 @@ import type { PhotoSwipeOptions, UIElementData } from 'photoswipe'
 import PhotoSwipeLightboxStub from './lightbox-stub'
 
 export interface GalleryProps {
+  pagination?: {
+    items: any[]
+    pageSize: number
+    displayItem: (
+      paginatedItems: any[],
+      pageNumber: number,
+      pageSize: number,
+    ) => ReactNode
+  }
+
   children?: ReactNode
 
   /**

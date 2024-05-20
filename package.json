@@ -1,6 +1,6 @@
 {
-  "name": "react-photoswipe-gallery",
-  "version": "3.0.1",
+  "name": "@andrew-wolf/react-photoswipe-gallery",
+  "version": "3.0.10",
   "description": "React component wrapper around PhotoSwipe",
   "type": "module",
   "main": "dist/index.js",
@@ -24,10 +24,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/dromru/react-photoswipe-gallery.git"
+    "url": "git+https://github.com/andrewwolf-eu/react-photoswipe-gallery.git"
   },
-  "homepage": "https://github.com/dromru/react-photoswipe-gallery",
-  "bugs": "https://github.com/dromru/react-photoswipe-gallery/issues",
+  "homepage": "https://github.com/andrewwolf-eu/react-photoswipe-gallery",
+  "bugs": {
+    "url": "https://github.com/andrewwolf-eu/react-photoswipe-gallery/issues"
+  },
   "license": "MIT",
   "scripts": {
     "build-ts": "rimraf dist && tsc --project tsconfig.build.json",
@@ -95,7 +97,7 @@
     "jest-environment-jsdom": "29.7.0",
     "lint-staged": "15.2.2",
     "photoswipe": "5.4.3",
-    "photoswipe-dynamic-caption-plugin": "dimsemenov/photoswipe-dynamic-caption-plugin",
+    "photoswipe-dynamic-caption-plugin": "github:dimsemenov/photoswipe-dynamic-caption-plugin",
     "pinst": "3.0.0",
     "prettier": "2.8.8",
     "prop-types": "15.8.1",

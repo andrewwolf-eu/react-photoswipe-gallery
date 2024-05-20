@@ -37,6 +37,7 @@ let pswp: PhotoSwipe | null = null
  * Gallery component providing photoswipe context
  */
 export const Gallery: FC<GalleryProps> = ({
+  pagination,
   children,
   options,
   plugins,
@@ -48,8 +49,62 @@ export const Gallery: FC<GalleryProps> = ({
   withDownloadButton,
 }) => {
   const [contentPortal, setContentPortal] = useState<ReactPortal | null>(null)
-
   const items = useRef(new Map<ItemRef, InternalItem>())
+
+  const paginate = (
+    array: string[],
+    pageSize: number,
+    pageNumber: number,
+  ): string[] => {
+    return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
+  }
+  const [pageNumber, setPageNumber] = useState<number>(1)
+  const [paginatedItems, setPaginatedItems] = useState<string[]>(
+    paginate(
+      pagination ? pagination.items : [],
+      pagination ? pagination.pageSize : 100,
+      pageNumber,
+    ),
+  )
+  const [pageBottom, setPageBottom] = useState<number>(1)
+  if (pagination) {
+    const onscroll = () => {
+      const scrolledTo = window.scrollY + window.innerHeight
+      const isReachTop = window.scrollY === 0
+      const isReachBottom = document.body.scrollHeight === scrolledTo
+      const NotFirstPage = pageNumber > 1
+      const NotLastPage =
+        Math.floor(pagination.items.length / pagination.pageSize) > pageNumber
+      if (isReachTop && NotFirstPage) {
+        setPaginatedItems(
+          paginate(pagination.items, pagination.pageSize, pageNumber - 1),
+        )
+        setPageNumber(pageNumber - 1)
+        window.scrollTo(0, pageBottom - 1)
+      }
+      if (isReachBottom && NotLastPage) {
+        setPageBottom(window.scrollY)
+        setPaginatedItems(
+          paginate(pagination.items, pagination.pageSize, pageNumber + 1),
+        )
+        setPageNumber(pageNumber + 1)
+        window.scrollTo(0, 1)
+      }
+    }
+
+    useEffect(() => {
+      window.addEventListener('scroll', onscroll)
+      return () => {
+        window.removeEventListener('scroll', onscroll)
+      }
+    }, [pageNumber])
+
+    useEffect(() => {
+      setPaginatedItems(
+        paginate(pagination ? pagination.items : [], pagination.pageSize, 1),
+      )
+    }, [pagination.items, pagination.pageSize])
+  }
 
   /**
    * Store PID from hash if there are no items yet,
@@ -468,7 +523,13 @@ export const Gallery: FC<GalleryProps> = ({
 
   return (
     <Context.Provider value={contextValue}>
-      {children}
+      {pagination
+        ? pagination.displayItem(
+            paginatedItems,
+            pageNumber,
+            pagination.pageSize,
+          )
+        : children}
       {contentPortal}
     </Context.Provider>
   )
