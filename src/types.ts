@@ -1,4 +1,4 @@
-import { MouseEvent, MutableRefObject, ReactNode } from 'react'
+import React, { MouseEvent, MutableRefObject, ReactNode } from 'react'
 import type PhotoSwipe from 'photoswipe'
 import type { PhotoSwipeOptions, UIElementData } from 'photoswipe'
 import PhotoSwipeLightboxStub from './lightbox-stub'
@@ -7,6 +7,11 @@ export interface GalleryProps {
   pagination?: {
     items: any[]
     pageSize: number
+    paginationControl: 'auto-by-scroll' | 'top-bottom-button'
+    UIElements?: {
+      PrevButton?: (onClick: any) => React.JSX.Element
+      NextButton?: (onClick: any) => React.JSX.Element
+    }
     displayItem: (
       paginatedItems: any[],
       pageNumber: number,

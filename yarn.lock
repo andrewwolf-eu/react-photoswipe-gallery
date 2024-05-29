@@ -33,6 +33,7 @@ __metadata:
     "@commitlint/prompt": "npm:18.6.1"
     "@emotion/react": "npm:11.11.4"
     "@emotion/styled": "npm:11.11.5"
+    "@mui/icons-material": "npm:5.15.19"
     "@mui/material": "npm:5.15.18"
     "@storybook/addon-essentials": "npm:7.6.17"
     "@storybook/addons": "npm:7.6.17"
@@ -2727,6 +2728,22 @@ __metadata:
   version: 5.15.18
   resolution: "@mui/core-downloads-tracker@npm:5.15.18"
   checksum: 10/d6f5d5bc70b7ace16b1fa86adf5f5bc175840fd21d69f230b8b2348fab4863940df030ace0c6b76beb57bd8bfa6a460788cbd86be90772c13684d87d409d8d32
+  languageName: node
+  linkType: hard
+
+"@mui/icons-material@npm:5.15.19":
+  version: 5.15.19
+  resolution: "@mui/icons-material@npm:5.15.19"
+  dependencies:
+    "@babel/runtime": "npm:^7.23.9"
+  peerDependencies:
+    "@mui/material": ^5.0.0
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10/f2d47ed7ffba7e28d24feb4160b65f814135ed3b96e10aa13949707a6e41e39695badd04c822c4e937892ea630a3640ddd0ff7b073f75def3f28bad2c9e5271b
   languageName: node
   linkType: hard
 

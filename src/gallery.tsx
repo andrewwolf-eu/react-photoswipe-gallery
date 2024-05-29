@@ -1,5 +1,6 @@
 import PhotoSwipe from 'photoswipe'
 import type { SlideData } from 'photoswipe'
+import { KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material'
 import React, {
   useRef,
   useCallback,
@@ -36,6 +37,43 @@ let pswp: PhotoSwipe | null = null
 /**
  * Gallery component providing photoswipe context
  */
+
+const PrevButtonComponent = ({ paginationConfig, turnPageBack }: any) => {
+  if (paginationConfig?.UIElements?.PrevButton) {
+    const { PrevButton } = paginationConfig.UIElements
+    return <PrevButton onClick={() => turnPageBack(paginationConfig)} />
+  }
+  return (
+    <KeyboardArrowUp
+      onClick={() => turnPageBack(paginationConfig)}
+      style={{
+        cursor: 'pointer',
+        width: '100%',
+        height: '30px',
+        backgroundColor: 'gray',
+      }}
+    />
+  )
+}
+
+const NextButtonComponent = ({ paginationConfig, turnPageForward }: any) => {
+  if (paginationConfig?.UIElements?.NextButton) {
+    const { NextButton } = paginationConfig.UIElements
+    return <NextButton onClick={() => turnPageForward(paginationConfig)} />
+  }
+  return (
+    <KeyboardArrowDown
+      onClick={() => turnPageForward(paginationConfig)}
+      style={{
+        cursor: 'pointer',
+        width: '100%',
+        height: '30px',
+        backgroundColor: 'gray',
+      }}
+    />
+  )
+}
+
 export const Gallery: FC<GalleryProps> = ({
   pagination,
   children,
@@ -48,6 +86,10 @@ export const Gallery: FC<GalleryProps> = ({
   withCaption,
   withDownloadButton,
 }) => {
+  const pagControlScroll =
+    pagination && pagination.paginationControl === 'auto-by-scroll'
+  const pagControlButton =
+    pagination && pagination.paginationControl === 'top-bottom-button'
   const [contentPortal, setContentPortal] = useState<ReactPortal | null>(null)
   const items = useRef(new Map<ItemRef, InternalItem>())
 
@@ -67,35 +109,63 @@ export const Gallery: FC<GalleryProps> = ({
     ),
   )
   const [pageBottom, setPageBottom] = useState<number>(1)
+
+  const isNotFirstPage = () => {
+    return pageNumber > 1
+  }
+  const isNotLastPage = (paginationConfig: any) => {
+    return (
+      Math.floor(paginationConfig.items.length / paginationConfig.pageSize) >
+      pageNumber
+    )
+  }
+
+  const turnPageBack = (paginationConfig: any) => {
+    setPaginatedItems(
+      paginate(
+        paginationConfig.items,
+        paginationConfig.pageSize,
+        pageNumber - 1,
+      ),
+    )
+    setPageNumber(pageNumber - 1)
+    window.scrollTo(0, pageBottom - 1)
+  }
+
+  const turnPageForward = (paginationConfig: any) => {
+    setPageBottom(window.scrollY)
+    setPaginatedItems(
+      paginate(
+        paginationConfig.items,
+        paginationConfig.pageSize,
+        pageNumber + 1,
+      ),
+    )
+    setPageNumber(pageNumber + 1)
+    window.scrollTo(0, 1)
+  }
+
   if (pagination) {
     const onscroll = () => {
+      const isReachedTop = window.scrollY === 0
       const scrolledTo = window.scrollY + window.innerHeight
-      const isReachTop = window.scrollY === 0
-      const isReachBottom = document.body.scrollHeight === scrolledTo
-      const NotFirstPage = pageNumber > 1
-      const NotLastPage =
-        Math.floor(pagination.items.length / pagination.pageSize) > pageNumber
-      if (isReachTop && NotFirstPage) {
-        setPaginatedItems(
-          paginate(pagination.items, pagination.pageSize, pageNumber - 1),
-        )
-        setPageNumber(pageNumber - 1)
-        window.scrollTo(0, pageBottom - 1)
+      const isReachedBottom = document.body.scrollHeight === scrolledTo
+      if (isReachedTop && isNotFirstPage()) {
+        turnPageBack(pagination)
       }
-      if (isReachBottom && NotLastPage) {
-        setPageBottom(window.scrollY)
-        setPaginatedItems(
-          paginate(pagination.items, pagination.pageSize, pageNumber + 1),
-        )
-        setPageNumber(pageNumber + 1)
-        window.scrollTo(0, 1)
+      if (isReachedBottom && isNotLastPage(pagination)) {
+        turnPageForward(pagination)
       }
     }
 
     useEffect(() => {
-      window.addEventListener('scroll', onscroll)
+      if (pagControlScroll) {
+        window.addEventListener('scroll', onscroll)
+      }
       return () => {
-        window.removeEventListener('scroll', onscroll)
+        if (pagControlScroll) {
+          window.removeEventListener('scroll', onscroll)
+        }
       }
     }, [pageNumber])
 
@@ -523,6 +593,12 @@ export const Gallery: FC<GalleryProps> = ({
 
   return (
     <Context.Provider value={contextValue}>
+      {pagControlButton && isNotFirstPage() ? (
+        <PrevButtonComponent
+          paginationConfig={pagination}
+          turnPageBack={turnPageBack}
+        />
+      ) : null}
       {pagination
         ? pagination.displayItem(
             paginatedItems,
@@ -530,6 +606,12 @@ export const Gallery: FC<GalleryProps> = ({
             pagination.pageSize,
           )
         : children}
+      {pagination && pagControlButton && isNotLastPage(pagination) ? (
+        <NextButtonComponent
+          paginationConfig={pagination}
+          turnPageForward={turnPageForward}
+        />
+      ) : null}
       {contentPortal}
     </Context.Provider>
   )

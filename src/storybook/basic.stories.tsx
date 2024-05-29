@@ -34,6 +34,35 @@ export const Basic: StoryObj = {
         pagination={{
           items: staticImageUrls,
           pageSize: 50,
+          paginationControl: 'top-bottom-button',
+          UIElements: {
+            PrevButton: ({ onClick }: any) => {
+              return (
+                <div
+                  onClick={onClick}
+                  style={{
+                    cursor: 'pointer',
+                    width: '100%',
+                    height: '30px',
+                    backgroundColor: 'red',
+                  }}
+                />
+              )
+            },
+            NextButton: ({ onClick }: any) => {
+              return (
+                <div
+                  onClick={onClick}
+                  style={{
+                    cursor: 'pointer',
+                    width: '100%',
+                    height: '30px',
+                    backgroundColor: 'green',
+                  }}
+                />
+              )
+            },
+          },
           displayItem: (
             paginatedItems: string[],
             pageNumber: number,
