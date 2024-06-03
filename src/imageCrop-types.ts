@@ -1,11 +1,16 @@
 import React from 'react'
 
+export interface ImageCropHandle {
+  crop: () => Promise<string>
+}
+
 export interface ImageCropProps {
+  parentRef?: any
   cropSize: { width: number; height: number }
   outputFileType?: 'jpeg' | 'png' | 'webp'
   base64Output?: boolean
-  getCroppedImage: (base64Output: string) => void
-  GetCroppedImageUIElement: (onClick: any) => React.JSX.Element
+  getCroppedImage?: (base64Output: string) => void
+  GetCroppedImageUIElement?: (onClick: any) => React.JSX.Element
   enableFileTypeControl?: boolean
   imageSrc?: string
   enableFileUpload?: boolean
