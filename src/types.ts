@@ -9,8 +9,10 @@ export interface GalleryProps {
     pageSize: number
     paginationControl: 'auto-by-scroll' | 'top-bottom-button'
     UIElements?: {
-      PrevButton?: (onClick: any) => React.JSX.Element
-      NextButton?: (onClick: any) => React.JSX.Element
+      FirstPageButton?: (onClick: any) => React.JSX.Element
+      PrevPageButton?: (onClick: any) => React.JSX.Element
+      NextPageButton?: (onClick: any) => React.JSX.Element
+      LastPageButton?: (onClick: any) => React.JSX.Element
     }
     displayItem: (
       paginatedItems: any[],

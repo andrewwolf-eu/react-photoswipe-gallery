@@ -36,7 +36,7 @@ export const Basic: StoryObj = {
           pageSize: 50,
           paginationControl: 'top-bottom-button',
           UIElements: {
-            PrevButton: ({ onClick }: any) => {
+            PrevPageButton: ({ onClick }: any) => {
               return (
                 <div
                   onClick={onClick}
@@ -49,7 +49,7 @@ export const Basic: StoryObj = {
                 />
               )
             },
-            NextButton: ({ onClick }: any) => {
+            NextPageButton: ({ onClick }: any) => {
               return (
                 <div
                   onClick={onClick}

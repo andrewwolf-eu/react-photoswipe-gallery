@@ -1,6 +1,11 @@
 import PhotoSwipe from 'photoswipe'
 import type { SlideData } from 'photoswipe'
-import { KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material'
+import {
+  KeyboardDoubleArrowUp,
+  KeyboardArrowUp,
+  KeyboardArrowDown,
+  KeyboardDoubleArrowDown,
+} from '@mui/icons-material'
 import React, {
   useRef,
   useCallback,
@@ -38,10 +43,31 @@ let pswp: PhotoSwipe | null = null
  * Gallery component providing photoswipe context
  */
 
-const PrevButtonComponent = ({ paginationConfig, turnPageBack }: any) => {
-  if (paginationConfig?.UIElements?.PrevButton) {
-    const { PrevButton } = paginationConfig.UIElements
-    return <PrevButton onClick={() => turnPageBack(paginationConfig)} />
+const FirstPageButtonComponent = ({
+  paginationConfig,
+  turnToFirstPage,
+}: any) => {
+  if (paginationConfig?.UIElements?.FirstPageButton) {
+    const { FirstPageButton } = paginationConfig.UIElements
+    return <FirstPageButton onClick={() => turnToFirstPage(paginationConfig)} />
+  }
+  return (
+    <KeyboardDoubleArrowUp
+      onClick={() => turnToFirstPage(paginationConfig)}
+      style={{
+        cursor: 'pointer',
+        width: '100%',
+        height: '50px',
+        backgroundColor: 'gray',
+      }}
+    />
+  )
+}
+
+const PrevPageButtonComponent = ({ paginationConfig, turnPageBack }: any) => {
+  if (paginationConfig?.UIElements?.PrevPageButton) {
+    const { PrevPageButton } = paginationConfig.UIElements
+    return <PrevPageButton onClick={() => turnPageBack(paginationConfig)} />
   }
   return (
     <KeyboardArrowUp
@@ -49,17 +75,20 @@ const PrevButtonComponent = ({ paginationConfig, turnPageBack }: any) => {
       style={{
         cursor: 'pointer',
         width: '100%',
-        height: '30px',
+        height: '50px',
         backgroundColor: 'gray',
       }}
     />
   )
 }
 
-const NextButtonComponent = ({ paginationConfig, turnPageForward }: any) => {
-  if (paginationConfig?.UIElements?.NextButton) {
-    const { NextButton } = paginationConfig.UIElements
-    return <NextButton onClick={() => turnPageForward(paginationConfig)} />
+const NextPageButtonComponent = ({
+  paginationConfig,
+  turnPageForward,
+}: any) => {
+  if (paginationConfig?.UIElements?.NextPageButton) {
+    const { NextPageButton } = paginationConfig.UIElements
+    return <NextPageButton onClick={() => turnPageForward(paginationConfig)} />
   }
   return (
     <KeyboardArrowDown
@@ -67,7 +96,25 @@ const NextButtonComponent = ({ paginationConfig, turnPageForward }: any) => {
       style={{
         cursor: 'pointer',
         width: '100%',
-        height: '30px',
+        height: '50px',
+        backgroundColor: 'gray',
+      }}
+    />
+  )
+}
+
+const LastPageButtonComponent = ({ paginationConfig, turnToLastPage }: any) => {
+  if (paginationConfig?.UIElements?.LastPageButton) {
+    const { LastPageButton } = paginationConfig.UIElements
+    return <LastPageButton onClick={() => turnToLastPage(paginationConfig)} />
+  }
+  return (
+    <KeyboardDoubleArrowDown
+      onClick={() => turnToLastPage(paginationConfig)}
+      style={{
+        cursor: 'pointer',
+        width: '100%',
+        height: '50px',
         backgroundColor: 'gray',
       }}
     />
@@ -120,6 +167,13 @@ export const Gallery: FC<GalleryProps> = ({
     )
   }
 
+  const turnToFirstPage = (paginationConfig: any) => {
+    setPaginatedItems(
+      paginate(paginationConfig.items, paginationConfig.pageSize, 1),
+    )
+    setPageNumber(1)
+  }
+
   const turnPageBack = (paginationConfig: any) => {
     setPaginatedItems(
       paginate(
@@ -143,6 +197,16 @@ export const Gallery: FC<GalleryProps> = ({
     )
     setPageNumber(pageNumber + 1)
     window.scrollTo(0, 1)
+  }
+
+  const turnToLastPage = (paginationConfig: any) => {
+    const lastPage = Math.floor(
+      paginationConfig.items.length / paginationConfig.pageSize,
+    )
+    setPaginatedItems(
+      paginate(paginationConfig.items, paginationConfig.pageSize, lastPage),
+    )
+    setPageNumber(lastPage)
   }
 
   if (pagination) {
@@ -594,7 +658,13 @@ export const Gallery: FC<GalleryProps> = ({
   return (
     <Context.Provider value={contextValue}>
       {pagControlButton && isNotFirstPage() ? (
-        <PrevButtonComponent
+        <FirstPageButtonComponent
+          paginationConfig={pagination}
+          turnToFirstPage={turnToFirstPage}
+        />
+      ) : null}
+      {pagControlButton && isNotFirstPage() ? (
+        <PrevPageButtonComponent
           paginationConfig={pagination}
           turnPageBack={turnPageBack}
         />
@@ -607,9 +677,15 @@ export const Gallery: FC<GalleryProps> = ({
           )
         : children}
       {pagination && pagControlButton && isNotLastPage(pagination) ? (
-        <NextButtonComponent
+        <NextPageButtonComponent
           paginationConfig={pagination}
           turnPageForward={turnPageForward}
+        />
+      ) : null}
+      {pagination && pagControlButton && isNotLastPage(pagination) ? (
+        <LastPageButtonComponent
+          paginationConfig={pagination}
+          turnToLastPage={turnToLastPage}
         />
       ) : null}
       {contentPortal}
