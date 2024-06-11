@@ -20,6 +20,7 @@ export interface GalleryProps {
       pageSize: number,
     ) => ReactNode
   }
+  ProcessingUIElement?: () => React.JSX.Element
 
   children?: ReactNode
 

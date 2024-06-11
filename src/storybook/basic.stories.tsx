@@ -113,6 +113,23 @@ export const Basic: StoryObj = {
             </div>
           ),
         }}
+        ProcessingUIElement={() => {
+          return (
+            <div
+              style={{
+                display: 'flex',
+                width: '100%',
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <p style={{ fontSize: 50, color: 'white' }}>
+                Content Processing...
+              </p>
+            </div>
+          )
+        }}
       />
     )
   },

@@ -127,6 +127,7 @@ export const Gallery: FC<GalleryProps> = ({
   options,
   plugins,
   uiElements,
+  ProcessingUIElement,
   id: galleryUID,
   onBeforeOpen,
   onOpen,
@@ -290,6 +291,11 @@ export const Gallery: FC<GalleryProps> = ({
               acc.index = i
             }
 
+            let updatedContent = content
+            if ((!original || !content) && ProcessingUIElement) {
+              updatedContent = <ProcessingUIElement />
+            }
+
             acc.slides.push({
               w: Number(width),
               h: Number(height),
@@ -298,7 +304,7 @@ export const Gallery: FC<GalleryProps> = ({
               msrc: thumbnail,
               element: ref.current,
               thumbCropped: cropped,
-              content,
+              content: updatedContent,
               ...(content !== undefined ? { type: 'html' } : {}),
               ...(pid !== undefined ? { pid } : {}),
               ...rest,
