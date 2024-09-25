@@ -163,7 +163,7 @@ export const Gallery: FC<GalleryProps> = ({
   }
   const isNotLastPage = (paginationConfig: any) => {
     return (
-      Math.floor(paginationConfig.items.length / paginationConfig.pageSize) >
+      Math.ceil(paginationConfig.items.length / paginationConfig.pageSize) >
       pageNumber
     )
   }
@@ -201,7 +201,7 @@ export const Gallery: FC<GalleryProps> = ({
   }
 
   const turnToLastPage = (paginationConfig: any) => {
-    const lastPage = Math.floor(
+    const lastPage = Math.ceil(
       paginationConfig.items.length / paginationConfig.pageSize,
     )
     setPaginatedItems(
